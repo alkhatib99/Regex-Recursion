@@ -1,17 +1,15 @@
 /* Write a function to do the division operation without using the built-in division*/
 
 function division(number, dividedBy){
-    // Write you logic here.(
-    if (dividedBy == 0)
-    return NaN;
-    if(number - dividedBy <= 0){
-        return 1;
-     }
-     else {
-        return division(number - dividedBy, dividedBy) + 1;
-     }
 
-}
+    if (dividedBy == 0)
+    return 0;
+    if(number<dividedBy)
+    return 0;
+    
+   return 1 + division(number-dividedBy, dividedBy);
+    
+};
 
 /* Write a function that implement Math.pow(x,n) but using recursion
 Example:
@@ -20,12 +18,12 @@ pow(2,4) = 16
 
 
 function pow(x,n){
-    // Write you logic here.
-    if(n==1)
+    if (n == 0)
     return 1;
-    else 
-    return x*pow(x,n-1);
-}
+  else
+    return x * pow(x, n - 1);
+    
+};
 
 /* The Fibonacci Series is a numeric series starting with the integers 0 and 1. In this series,
 the next integer is determined by summing the previous two. This gives us:
@@ -38,12 +36,12 @@ Example: n = 4 ==> 3, n= 0 ==> 0, n = 3 ==> 2 */
 
 function fibonacci(n){
     // Write you logic here.
-    if (n == 0) {
-        return 0;
-     } else {
-        return 1+fibonacci(n/2);
-     }
-}
+    if(n < 2){
+        return n;
+      }
+    
+      return fibonacci(n - 1) + fibonacci(n - 2);
+};
 
 /* The set [1, 2, 3, ..., n] contains a total of n! unique permutations.
 
@@ -61,10 +59,26 @@ Example:
 Input: n = 3, k = 3
 Output: "213" */
 
-function permutations(n){
-    let arr = [];
-    // Write you logic here. sssssssss
-    return arr
+function permutations(nums,n){
+    let result = [];
+    if (nums.length === 0 || n === 0) return result;
+    if (nums.length === 1 | n=== 1) return nums;
+
+    for (let i = 0; i < nums.length; i++) {
+      const currentNum = nums[i];
+      const remainingNums = nums.slice(0, i).concat(nums.slice(i +1));
+      const remainingNumsPermuted = permutations(remainingNums);
+      for (let j = 0; j < remainingNumsPermuted.length; j++) {
+         const permutedArray =[currentNum].concat(remainingNumsPermuted[j]);
+      let elm="";
+         permutedArray.forEach(element => {
+          elm+=element;
+      });
+         result.push(elm);
+       }
+     }
+     return result;
+    
 };
 
 
@@ -88,16 +102,16 @@ describe("Test pow", () => {
 describe("Test fibonacci", () => {
     test("It should implement fibonacci series logic", () => {
         expect(fibonacci(0)).toStrictEqual(0);
-        expect(pow(1)).toStrictEqual(1);
-        expect(pow(2)).toStrictEqual(1);
-        expect(pow(3)).toStrictEqual(2);
-        expect(pow(4)).toStrictEqual(3);
+        expect(fibonacci(1)).toStrictEqual(1);
+        expect(fibonacci(2)).toStrictEqual(1);
+        expect(fibonacci(3)).toStrictEqual(2);
+        expect(fibonacci(4)).toStrictEqual(3);
     })
 });
 
 describe("Test permutations", () => {
     test("It should return a list of possible combinations", () => {
         expect(permutations([1,2,3],3)).toStrictEqual(["123", "132", "213", "231", "312", "321"]);
-        expect(permutations[1,2,3],0).toStrictEqual([]);
+        expect(permutations([1,2,3],0)).toStrictEqual([]);
     })
 });
